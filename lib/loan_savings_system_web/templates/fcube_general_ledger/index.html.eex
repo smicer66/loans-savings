@@ -1,0 +1,51 @@
+ <ol class="breadcrumb page-breadcrumb">
+      <!--<li class="breadcrumb-item">
+          <i class="subheader-icon fal fa-chart-area"></i> Loans & Savings
+      </li>-->
+      <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date"></span></li>
+  </ol>
+
+  <div class="subheader">
+    <h1 class="subheader-title">
+        <i class="subheader-icon fal fa-window"></i> End of Day History
+    </h1>
+    </h1>
+
+    <div class="element-box-content">
+      <a href="<%= Routes.user_path(@conn, :savings_dashboard)%>" class="btn btn-secondary btn-sm waves-effect waves-themed" type="button"> Back</a>
+    </div>
+  </div>    
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div id="panel-1" class="panel">
+          <div class="panel-content">
+            <div class="panel-container show">
+              <div class="panel-content">
+                <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                  <thead class="p-3 bg-success-900 rounded overflow-hidden position-relative text-white mb-g">
+                    <tr>
+                      <th class="border-top-0 table-scale-border-bottom fw-700">GL Account Name</th>
+                      <th class="text-center border-top-0 table-scale-border-bottom fw-700">GL Account Number</th>
+                      <th class="text-center border-top-0 table-scale-border-bottom fw-700">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+				<%= for fcube_general_ledger <- @fcube_general_ledger do %>
+					<tr>
+					  <td class="text-left"><%= fcube_general_ledger.account_name %></td>
+					  <td class="text-center"><%= fcube_general_ledger.gl_account_no %></td>
+
+					  <td class="text-center">
+							<span><a class="btn btn-primary" href="/Savings/New-Flexcube-Account/<%= fcube_general_ledger.id %>">Edit GL Account</a></span>
+					  </td>
+					</tr>
+				<% end %>
+				  </tbody>
+                </table>
+              </div>
+          </div>
+          </div>
+      </div>
+    </div>
+  </div>

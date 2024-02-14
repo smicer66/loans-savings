@@ -1,0 +1,405 @@
+ <ol class="breadcrumb page-breadcrumb">
+      <li class="breadcrumb-item">
+          <i class="subheader-icon fal fa-chart-area"></i> Loans & Savings
+      </li>
+      <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date"></span></li>
+  </ol>
+
+  <div class="subheader">
+    <h1 class="subheader-title">
+        <i class="subheader-icon fal fa-window"></i> Fixed Deposit Reports
+    </h1>
+
+    <div class="element-box-content">
+      <a href="<%= Routes.user_path(@conn, :dashboard)%>" class="btn btn-secondary btn-sm waves-effect waves-themed" type="button"> Back</a>
+    </div>
+  </div>    
+                    
+  <!--------------------------------------------------------------------------------Flash -->
+
+  <div class="row">
+    <div class="col-xl-12">
+        <div id="panel-1" class="panel">
+          <div class="panel-content">
+            <div class="panel-container show">
+              <div class="panel-content">
+                    <h5 class="form-header">
+                    <u>Filter Report:</u>
+                    </h5>
+                   <!-- <h5 class="form-header">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                              <label class="form-label" for="button-addon4"></label>
+                              <div class="input-group">
+                                  <div class="input-group-prepend">
+                                      <button class="btn btn-info waves-effect waves-themed" type="button"><i class="fal">Select Report Type</i></button>
+                                  </div>
+                                  <Select class="custom-select" id="colorselector">   
+                                    <option value="fixeddeposits">Fixed Deposits</option>
+                                    <option value="transaction">Transaction</option>
+                                    <option value="customer">Customer Reports</option>
+                                    <option value="divestment">Divestment Reports</option>
+                                  </Select>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </h5><br> -->
+                    <!--- ############# FIXED DEPOSITS  #######################-->
+                    <div class="form-desc colors" id="fixeddeposits">
+                    <!--<h5 class="form-header text-center">FIXED DEPOSITS</h5>-->
+                        <form action="<%= Routes.report_path(@conn, :generate_fixed_deposit_reports) %>" method="" class="">
+                        <input type="hidden" name="_csrf_token" id="csrf" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                            <div class="row">
+                              <div class="form-group col-md-4">
+                                  <label class="form-label" for="input-group-sm-size-2">Status</label>
+                                  <div class="input-group input-group-sm">
+                                      
+									  
+									  
+										<%= if(!is_nil(@params["x__customsql"])) do %>
+											<select class="custom-select" name="x__customsql" id="inputGroupSelect04" aria-label="Example select with button addon">
+												<option selected="" value=-1>Select One...</option>
+												<%= if(@params["x__customsql"]=="u.fixedDepositStatus = 'ACTIVE' and u.isMatured = 0 and u.isDivested = 0") do %>
+													<option value="u.fixedDepositStatus = 'ACTIVE' and u.isMatured = 0 and u.isDivested = 0" selected>Active</option>
+												<% else %>
+													<option value="u.fixedDepositStatus = 'ACTIVE' and u.isMatured = 0 and u.isDivested = 0">Active</option>
+												<% end %>
+												
+												<%= if(@params["x__customsql"]=="u.fixedDepositStatus = 'PENDING'") do %>
+													<option value="u.fixedDepositStatus = 'PENDING'" selected>Pending</option>
+												<% else %>
+													<option value="u.fixedDepositStatus = 'PENDING'">Pending</option>
+												<% end %>
+												
+												<%= if(@params["x__customsql"]=="u.isMatured = 1") do %>
+													<option value="u.isMatured = 1" selected>Matured</option>
+												<% else %>
+													<option value="u.isMatured = 1">Matured</option>
+												<% end %>
+												
+												<%= if(@params["x__customsql"]=="u.isDivested = 1") do %>
+													<option value="u.isDivested = 1" selected>Divested</option>
+												<% else %>
+													<option value="u.isDivested = 1">Divested</option>
+												<% end %>
+											</select>
+										<% else %>
+											<select class="custom-select" name="x__customsql" id="inputGroupSelect04" aria-label="Example select with button addon">
+												  <option value=-1 selected="">Select One...</option>
+												  <option value="u.fixedDepositStatus = 'ACTIVE' and u.isMatured = 0 and u.isDivested = 0">Active</option>
+												  <option value="u.fixedDepositStatus = 'PENDING'">Pending</option>
+												  <option value="u.isMatured = 1">Matured</option>
+												  <option value="u.isDivested = 1">Divested</option>
+											</select>
+										<% end %>
+                                  </div>
+                              </div>
+                                <!--<div class="form-group col-md-3">
+                                 <label class="form-label" for="input-group-sm-size-2">Tenor Range</label>
+                                       <select class="custom-select" name="u.fixedPeriodType__select__string__" id="fixedPeriodType" aria-label="Example select with button addon">
+                                        <option selected="" value=-1>Select One...</option>
+                                        <option value="Months">0 - 30</option>
+                                        <option value="Days">30 - 60</option>
+                                        <option value="Days">60 - 90</option>
+                                      </select>
+                                  </div>-->
+                                <div class="form-group col-md-4">
+                                  <label class="form-label" for="input-group-sm-size-2">Divestment Type</label>
+                                  <div class="input-group input-group-sm">
+                                       
+									  
+									  <%= if(!is_nil(@params["d.divestmentType__select__string__"])) do %>
+											<select class="custom-select" name="d.divestmentType__select__string__" id="inputGroupSelect04" aria-label="Example select with button addon">
+												<option selected="" value=-1>Select One...</option>
+												<%= if(@params["d.divestmentType__select__string__"]=="Full Divestment") do %>
+													<option value="Full Divestment" selected>Full Divestment</option>
+												<% else %>
+													<option value="Full Divestment">Full Divestment</option>
+												<% end %>
+												
+												<%= if(@params["d.divestmentType__select__string__"]=="Partial Divestment") do %>
+													<option value="Partial Divestment" selected>Partial Divestment</option>
+												<% else %>
+													<option value="Partial Divestment">Partial Divestment</option>
+												<% end %>
+											</select>
+										<% else %>
+											<select class="custom-select" name="d.divestmentType__select__string__" id="inputGroupSelect04" aria-label="Example select with button addon">
+												  <option selected="" value=-1>Select One...</option>
+												  <option value="Full Divestment">Full Divestment</option>
+												  <option value="Partial Divestment">Partial Divestment</option>
+											 </select>
+										<% end %>
+                                  </div>
+                                </div>
+                             <!-- <div class="form-group col-md-3">
+                                  <label class="form-label" for="input-group-sm-size-2">Tenure Type</label>
+                                  <div class="input-group input-group-sm">
+                                       <select class="custom-select" name="u.fixedPeriodType__select__string__" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                          <option selected="" value=-1>Select One...</option>
+                                          <option value="Days">Days</option>
+                                          <option value="Months">Months</option>
+                                          <option value="Years">Years</option>
+                                      </select>
+                                  </div>
+                              </div> -->
+                             <!-- <div class="form-group col-md-3">
+                                  <label class="form-label" for="input-group-sm-size-2">Branch</label>
+                                  <div class="input-group input-group-sm">
+                                       <select class="custom-select" name="u.branchId__select__number__" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                          <option selected="" value=-1>Select One...</option>
+                                          <%= for branch <- @branches do %>
+                                          <option value="<%= branch.id %>"><%= branch.branchName %></option>
+                                          <% end %>
+                                      </select>
+                                  </div>
+                              </div> -->
+                              <div class="form-group col-md-4">
+                                  <label class="form-label" for="input-group-sm-size-2">Currency</label>
+                                  <div class="input-group input-group-sm">
+                                       <select class="custom-select" name="u.currency__select__string__" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                          <!--<option selected="" value=-1>Select One...</option>-->
+                                          <%= for curency <- @curencies do %>
+                                          <option value="<%= curency.isoCode %>"><%= curency.name %></option>
+                                          <% end %>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="form-group col-md-4">
+                                <label class="form-label" for="input-group-sm-size-2">Principal Range</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text ">
+                                            Min.
+                                        </span>
+                                    </div>
+									
+									<%= if(!is_nil(@params["u.principalAmount__number__number__greaterorequals__"])) do %>
+										<input type="text" aria-label="First name" value="<%= @params["u.principalAmount__number__number__greaterorequals__"] %>" name="u.principalAmount__number__number__greaterorequals__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="text" aria-label="First name" name="u.principalAmount__number__number__greaterorequals__" class="form-control" placeholder="" id="min">
+									<% end %>
+									
+									
+                                    <div class="input-group-append input-group-prepend">
+                                        <span class="input-group-text">
+                                            Max.
+                                        </span>
+                                    </div>
+									<%= if(!is_nil(@params["u.principalAmount__number__number__lessorequals__"])) do %>
+										<input type="text" aria-label="First name" value="<%= @params["u.principalAmount__number__number__lessorequals__"] %>" name="u.principalAmount__number__number__lessorequals__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="text" aria-label="First name" name="u.principalAmount__number__number__lessorequals__" class="form-control" placeholder="" id="min">
+									<% end %>
+
+                                </div>
+                              </div>
+
+                              <div class="form-group col-md-4">
+                                <label class="form-label" for="input-group-sm-size-2">Deposit Date Range</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text ">
+                                            From
+                                        </span>
+                                    </div>
+									<%= if(!is_nil(@params["u.startDate__date__date__greaterorequals__"])) do %>
+										<input type="date" aria-label="First name" value="<%= @params["u.startDate__date__date__greaterorequals__"] %>" name="u.startDate__date__date__greaterorequals__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="date" aria-label="First name" name="u.startDate__date__date__greaterorequals__" class="form-control" placeholder="" id="user">
+									<% end %>
+                                    <div class="input-group-append input-group-prepend">
+                                        <span class="input-group-text">
+                                            To
+                                        </span>
+                                    </div>
+									<%= if(!is_nil(@params["u.startDate__date__date__lessorequals__"])) do %>
+										<input type="date" aria-label="First name" value="<%= @params["u.startDate__date__date__lessorequals__"] %>" name="u.startDate__date__date__lessorequals__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="date" aria-label="First name" name="u.startDate__date__date__lessorequals__" class="form-control" placeholder="" id="user">
+									<% end %>
+                                </div>
+                              </div>
+                              <div class="form-group col-md-4">
+                                <label class="form-label" for="input-group-sm-size-2">Maturity Date Range</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text ">
+                                            From
+                                        </span>
+                                    </div>
+									<%= if(!is_nil(@params["u.endDate__date__date__greaterorequals__"])) do %>
+										<input type="date" aria-label="First name" value="<%= @params["u.endDate__date__date__greaterorequals__"] %>" name="u.endDate__date__date__greaterorequals__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="date" aria-label="First name" name="u.endDate__date__date__greaterorequals__" class="form-control" placeholder="" id="user">
+									<% end %>
+                                    <div class="input-group-append input-group-prepend">
+                                        <span class="input-group-text">
+                                            To
+                                        </span>
+                                    </div>
+									<%= if(!is_nil(@params["u.endDate__date__date__lessorequals__"])) do %>
+										<input type="date" aria-label="First name" value="<%= @params["u.endDate__date__date__lessorequals__"] %>" name="u.endDate__date__date__lessorequals__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="date" aria-label="First name" name="u.endDate__date__date__lessorequals__" class="form-control" placeholder="" id="user">
+									<% end %>
+                                </div>
+                              </div>
+
+                              <!-- <div class="form-group col-md-6">
+                                  <label class="form-label" for="input-group-sm-size-2">Interest Range (%)</label>
+                                  <div class="input-group input-group-sm">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text ">
+                                              Min.
+                                          </span>
+                                      </div>
+                                      <input type="text" name="interestRate__number__number__greaterorequals__" aria-label="First name" class="form-control" placeholder="" id="user">
+                                      <div class="input-group-append input-group-prepend">
+                                          <span class="input-group-text">
+                                              Max.
+                                          </span>
+                                      </div>
+                                      <input type="text" name="interestRate__number__number__lessorequals__" aria-label="First name" class="form-control" placeholder="" id="user">
+                                      <div class="input-group-append input-group-prepend">
+                                          <span class="input-group-text">
+                                              Per
+                                          </span>
+                                      </div>
+                                      <select class="custom-select" name="interestRateType__select__string__" id="fixedPeriodType" aria-label="Example select with button addon">
+                                        <option selected="" value=-1>Select One...</option>
+                                        <option value="Years">Annum</option>
+                                        <option value="Months">Month</option>
+                                        <option value="Days">Day</option>
+                                      </select>
+
+                                  </div>
+                                </div>-->
+                                <div class="form-group col-md-4">
+                                  <label class="form-label" for="input-group-sm-size-2">Product</label>
+                                  <div class="input-group input-group-sm">
+                                       
+									  <%= if(!is_nil(@params["p.id__select__number__"])) do %>
+											<select class="custom-select" name="p.id__select__number__" id="inputGroupSelect04" aria-label="Example select with button addon">
+												<option selected="" value=-1>Select One...</option>
+												
+												<%= for product <- @products do %>
+													<%= if (@params["p.id__select__number__"]===(Integer.to_string(product.id))) do %>
+														<option value="<%= product.id %>" selected><%= product.name %></option>
+													<% else %>
+														<option value="<%= product.id %>"><%= product.name %></option>
+													<% end %>
+												<% end %>
+											</select>
+										<% else %>
+											<select class="custom-select" name="p.id__select__number__" id="inputGroupSelect04" aria-label="Example select with button addon">
+											  <option selected="" value=-1>Select One...</option>
+											  <%= for product <- @products do %>
+											  <option value="<%= product.id %>"><%= product.name %></option>
+											  <% end %>
+										  </select>
+										<% end %>
+                                  </div>
+                                </div>
+                                </div>
+                            </div><br>
+                            <button class="btn btn-primary pull-right" type="submit"> Generate</button>
+                        </form>
+                    </div>
+                    <!--- ############# END  #######################-->
+              </div>
+            </div>
+          </div>
+        </div>
+      <div id="panel-1" class="panel  col-xl-12">
+          <div class="panel-content">
+            <div class="panel-container show">
+              <div class="panel-content">
+                <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                <input type="hidden" id="csrf" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                  <thead class="p-3 bg-success-900 rounded overflow-hidden position-relative text-white mb-g">
+                    <tr>
+                      <th class="text-center border-top-0 table-scale-border-bottom">S/No</th>
+                      <th>Customer Name</th>
+                      <th>Deposit Details</th>
+                      <th>Product Name</th>
+                      <th>Status</th>
+                      <th>Divestment Type</th>
+                      <th class="text-right">Principal Amount</th>
+                      <th class="text-right">Expected Interest</th>
+                      <th class="text-right">Total Charges</th>
+                      <th class="text-right">Accrued Interest</th>
+                      <th class="text-right">Divest Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <%= if(!is_nil(@reports)) do %>
+					<%= for {report, index} <- Enum.with_index(@reports) do %>
+                      <tr>
+                            <td><%= (index+1) %>.</td>
+                          <td><strong><%= Enum.at(report, 19) %></strong>
+                            <br>
+                            <small><%= Enum.at(report, 20) %></small></td>
+                          <td>
+                            <strong>Paid: </strong><%= String.slice("#{Enum.at(report, 15)}", 0, 16) %> <sup>HRS</sup>
+                            <br>
+                            <strong>Matures: </strong><%= String.slice("#{Enum.at(report, 16)}", 0, 16) %> <sup>HRS</sup>
+                          </td>
+                          <td><strong><%= Enum.at(report, 21) %></strong>
+						  <br><small><%= Enum.at(report, 27) %> <%= Enum.at(report, 26) %> | <%= Enum.at(report, 28) %>%/<%= Enum.at(report, 29) %> | <%= Enum.at(report, 30) %> days</small></td>
+						  <%= if(!is_nil(Enum.at(report, 22)) && Enum.at(report, 22)==true) do %>
+								<%= if(!is_nil(Enum.at(report, 23)) && Enum.at(report, 23)==true) do %>
+									<td>Matured And Withdrawn</td>
+								<% else %>
+									<td>Matured Pending Withdrawal</td>
+								<% end %>
+							<% else %>
+								<%= if(!is_nil(Enum.at(report, 24)) && Enum.at(report, 24)==true) do %>
+									<td>Divested</td>
+								<% else %>
+									<td>Active</td>
+								<% end %>
+							<% end %>
+                          <td><%= Enum.at(report, 18) %></td>
+                          <td class="text-right"><sup><%= Enum.at(report, 7) %></sup><%= Decimal.round(Decimal.from_float(Enum.at(report, 0)), Enum.at(report, 8)) %></td>
+                          <td class="text-right"><sup><%= Enum.at(report, 7) %></sup><%= Decimal.round(Decimal.from_float(Enum.at(report, 5)), Enum.at(report, 8)) %></td>
+                          <td class="text-right"><sup><%= Enum.at(report, 7) %></sup><%= Decimal.round(Decimal.from_float(Enum.at(report, 10) + Enum.at(report, 11) + Enum.at(report, 12) + Enum.at(report, 13)), Enum.at(report, 8)) %></td>
+                          <td class="text-right"><sup><%= Enum.at(report, 7) %></sup><%= Decimal.round(Decimal.from_float(Enum.at(report, 6)), Enum.at(report, 8)) %></td>
+						  <%= if(is_nil(Enum.at(report, 31))) do %>
+							<td class="text-right"><sup><%= Enum.at(report, 7) %></sup><%= Decimal.round(Decimal.from_float(0.00), Enum.at(report, 8)) %></td>
+						  <% else %>
+							<td class="text-right"><sup><%= Enum.at(report, 7) %></sup><%= Decimal.round(Decimal.from_float(Enum.at(report, 31)), Enum.at(report, 8)) %></td>
+						  <% end %>
+                        </tr>
+                    <% end %>
+                  <% end %>
+                  </tbody>
+                </table>
+
+              </div>
+          </div>
+
+
+ 
+         
+
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+	  <script>
+      $(document).ready(function(){
+          $('#colorselector').change(function() {
+              $('.colors').hide();
+              $('#' + $(this).val()).show();
+        });
+      });
+    </script>
+  
+               
+
+         

@@ -1,0 +1,179 @@
+ <ol class="breadcrumb page-breadcrumb">
+      <li class="breadcrumb-item">
+          <i class="subheader-icon fal fa-chart-area"></i> Loans & Savings
+      </li>
+      <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date"></span></li>
+  </ol>
+
+  <div class="subheader">
+    <h1 class="subheader-title">
+        <i class="subheader-icon fal fa-window"></i> Customer Reports
+    </h1>
+
+    <div class="element-box-content">
+      <a href="<%= Routes.user_path(@conn, :dashboard)%>" class="btn btn-secondary btn-sm waves-effect waves-themed" type="button"> Back</a>
+    </div>
+  </div>    
+
+  <!--------------------------------------------------------------------------------Flash -->
+
+  <div class="row">
+    <div class="col-xl-12">
+        <div id="panel-1" class="panel">
+          <div class="panel-content">
+            <div class="panel-container show">
+              <div class="panel-content">
+                    <h5 class="form-header">
+                    <u>Filter Report:</u>
+                    </h5>
+                    <div class="form-desc">
+                        <form action="<%= Routes.report_path(@conn, :generate_customer_reports) %>" method="" class="">
+                        <input type="hidden" name="_csrf_token" id="csrf" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                            <div class="row">
+                              <div class="form-group col-md-3">
+								<div class="col-md-6" style="padding-left: 0px !important; float: left !important">
+                                  <label class="form-label" for="input-group-sm-size-2">First Name</label>
+                                  <div class="input-group input-group-sm">
+									<%= if(!is_nil(@params["b.firstName__string__string__lookslike__"])) do %>
+										<input type="text" aria-label="First name" value="<%= @params["b.firstName__string__string__lookslike__"] %>" name="b.firstName__string__string__lookslike__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="text" aria-label="First name" name="b.firstName__string__string__lookslike__" class="form-control" placeholder="" id="min">
+									<% end %>
+                                  </div>
+								</div>
+								<div class="col-md-6" style="padding-right: 0px !important; float: left !important">
+                                  <label class="form-label" for="input-group-sm-size-2">Last Name</label>
+                                  <div class="input-group input-group-sm">
+									<%= if(!is_nil(@params["b.lastName__string__string__lookslike__"])) do %>
+										<input type="text" aria-label="First name" value="<%= @params["b.lastName__string__string__lookslike__"] %>" name="b.lastName__string__string__lookslike__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="text" aria-label="First name" name="b.lastName__string__string__lookslike__" class="form-control" placeholder="" id="min">
+									<% end %>
+                                  </div>
+								</div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                  <label class="form-label" for="input-group-sm-size-2">Phone Number</label>
+                                  <div class="input-group input-group-sm">
+									<%= if(!is_nil(@params["b.mobileNumber__text__string__"])) do %>
+										<input type="text" aria-label="First name" value="<%= @params["b.mobileNumber__text__string__"] %>" name="b.mobileNumber__text__string__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="text" aria-label="First name" name="b.mobileNumber__text__string__" class="form-control" placeholder="" id="min">
+									<% end %>
+                                  </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                  <label class="form-label" for="input-group-sm-size-2">NRC</label>
+                                  <div class="input-group input-group-sm">
+									<%= if(!is_nil(@params["b.meansOfIdentificationNumber__text__string__"])) do %>
+										<input type="text" aria-label="First name" value="<%= @params["b.meansOfIdentificationNumber__text__string__"] %>" name="b.meansOfIdentificationNumber__text__string__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="text" aria-label="First name" name="b.meansOfIdentificationNumber__text__string__" class="form-control" placeholder="" id="min">
+									<% end %>
+                                  </div>
+                              </div>
+                                <div class="form-group col-md-3">
+                                  <label class="form-label" for="input-group-sm-size-2">Customers Status</label>
+                                  <div class="input-group input-group-sm">
+                                      
+									  
+									  <%= if(!is_nil(@params["u.status__select__string__"])) do %>
+											<select class="custom-select" name="u.status__select__string__" id="inputGroupSelect04" aria-label="Example select with button addon">
+												<option selected="" value=-1>Select One...</option>
+												
+												<%= if(@params["u.status__select__string__"]=="DEACTIVATED") do %>
+													<option value="DEACTIVATED" selected>INACTIVE</option>
+												<% else %>
+													<option value="DEACTIVATED">INACTIVE</option>
+												<% end %>
+												
+												<%= if(@params["u.status__select__string__"]=="ACTIVE") do %>
+													<option value="ACTIVE" selected>ACTIVE</option>
+												<% else %>
+													<option value="ACTIVE">ACTIVE</option>
+												<% end %>
+											</select>
+										<% else %>
+											<select class="custom-select" id="status" name="u.status__select__string__" aria-label="Example select with button addon">
+												  <option value=-1>Select One...</option>
+												  <option value="ACTIVE">ACTIVE</option>
+												  <option value="DEACTIVATED">INACTIVE</option>
+											  </select>
+										<% end %>
+                                  </div>
+                              </div> 
+                              
+                             
+                              <div class="form-group col-md-3">
+                                <label class="form-label" for="input-group-sm-size-2">Customer Signed Up Between</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text ">
+                                            From
+                                        </span>
+                                    </div>
+									<%= if(!is_nil(@params["uR.inserted_at__date__date__greaterorequals__"])) do %>
+										<input type="date" aria-label="First name" value="<%= @params["uR.inserted_at__date__date__greaterorequals__"] %>" name="uR.inserted_at__date__date__greaterorequals__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="date" aria-label="First name" name="uR.inserted_at__date__date__greaterorequals__" class="form-control" placeholder="" id="min">
+									<% end %>
+                                    <div class="input-group-append input-group-prepend">
+                                        <span class="input-group-text">
+                                            To
+                                        </span>
+                                    </div>
+                                      
+									  <%= if(!is_nil(@params["uR.inserted_at__date__date__lessorequals__"])) do %>
+										<input type="date" aria-label="First name" value="<%= @params["uR.inserted_at__date__date__lessorequals__"] %>" name="uR.inserted_at__date__date__lessorequals__" class="form-control" placeholder="" id="max">
+									<% else %>
+										<input type="date" aria-label="First name" name="uR.inserted_at__date__date__lessorequals__" class="form-control" placeholder="" id="min">
+									<% end %>
+                                </div>
+                              </div>
+                              
+                            </div> 
+
+                            <br>
+
+                            <button class="btn btn-primary pull-right" type="submit"> Generate</button>
+                        </form>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <div id="panel-1" class="panel">
+          <div class="panel-content">
+            <div class="panel-container show">
+              <div class="panel-content">
+                <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                <input type="hidden" id="csrf" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                  <thead class="p-3 bg-success-900 rounded overflow-hidden position-relative text-white mb-g">
+                    <tr>
+                      <th>Customer Name</th>
+                      <th>Mobile Number</th>
+                      <th>ID No.</th>
+                      <th>Total Deposits</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                   <%= if(!is_nil(@reports)) do %>
+                    <%= for report <- @reports do %>
+                      <tr>
+                          <td><%= Enum.at(report, 0) %> <%= Enum.at(report, 1) %></td>
+                          <td><%= Enum.at(report, 2) %></td>
+                          <td><%= Enum.at(report, 3) %></td>
+						  <td class="text-right"><sup><%= Enum.at(report, 21) %></sup><%= Decimal.round(Decimal.from_float(Enum.at(report, 19)), Enum.at(report, 20)) %></td>
+                          <td><%= Enum.at(report, 8) %></td>
+                        </tr>
+                    <% end %>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
